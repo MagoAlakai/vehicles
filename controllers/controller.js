@@ -1,7 +1,12 @@
 var car;
+var wheel1;
+var wheel2;
+var wheel3;
+var wheel4;
+//Todo lo relacionado con car.
 function createCar(plate, brand, color) {
-    car = new Car(plate, brand, color);
-    //car.addWheel(new Wheel(2,"SEAT"));
+    car = new Car(plate.value, brand.value, color.value);
+    return car;
 }
 function showCar(car) {
     var carProperties = document.getElementsByClassName("col");
@@ -11,16 +16,145 @@ function showCar(car) {
     carArr[2].innerHTML = "Brand: " + car.brand;
 }
 var myForm = document.getElementById('myFormId');
-myForm.onsubmit = function () {
-    var plate = document.getElementById('plate').value;
-    var brand = document.getElementById('brand').value;
-    var color = document.getElementById('color').value;
+myForm.onsubmit = function (event) {
+    var plate = document.getElementById('plate');
+    var brand = document.getElementById('brand');
+    var color = document.getElementById('color');
+    var acumErrores = 0;
+    if (plate.value == "") {
+        plate.classList.add('is-invalid');
+        document.getElementById("errorPlate").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    if (brand.value == "") {
+        brand.classList.add('is-invalid');
+        document.getElementById("errorBrand").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    if (color.value == "") {
+        color.classList.add('is-invalid');
+        document.getElementById("errorColor").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    if (acumErrores === 0) {
+        plate.classList.remove('is-invalid');
+        brand.classList.remove('is-invalid');
+        color.classList.remove('is-invalid');
+    }
     createCar(plate, brand, color);
     var show_car = document.getElementById("show_car");
     show_car.classList.remove('invisible');
     showCar(car);
+    plate.value = "";
+    brand.value = "";
+    color.value = "";
+    event.preventDefault();
 };
-/*let coche: HTMLHeadingElement = (document.getElementById("carInfo") as HTMLHeadingElement);
-coche.innerText = `matricula = ${car.plate}, marca = ${car.brand} y el color: ${car.color}`;*/
-/*document.body.innerText="CAR: PLATE: " + car.plate
-+ " BRAND: " + car.brand + " COLOR: " + car.color + " WHEELS: " + JSON.stringify(car.wheels);*/
+//Todo lo relacionado con wheels.
+var myFormWheel = document.getElementById('myFormIdWheel');
+myFormWheel.onsubmit = function (event) {
+    var wheel1_brand = document.getElementById('wheel1_brand');
+    var wheel1_diameter = document.getElementById('wheel1_diameter');
+    var wheel2_brand = document.getElementById('wheel2_brand');
+    var wheel2_diameter = document.getElementById('wheel2_diameter');
+    var wheel3_brand = document.getElementById('wheel3_brand');
+    var wheel3_diameter = document.getElementById('wheel3_diameter');
+    var wheel4_brand = document.getElementById('wheel4_brand');
+    var wheel4_diameter = document.getElementById('wheel4_diameter');
+    var acumErrores = 0;
+    var wheels_data = [];
+    var wheel1_data = [];
+    var wheel2_data = [];
+    var wheel3_data = [];
+    var wheel4_data = [];
+    if (wheel1_brand.value == "") {
+        wheel1_brand.classList.add('is-invalid');
+        document.getElementById("errorWheel1_brand").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    else {
+        wheel1_data.push(wheel1_brand.value);
+    }
+    if (wheel1_diameter.value == "") {
+        wheel1_diameter.classList.add('is-invalid');
+        document.getElementById("errorWheel1_diameter").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    else {
+        wheel1_data.push(wheel1_diameter.value);
+        wheels_data.push(wheel1_data);
+    }
+    if (wheel2_brand.value == "") {
+        wheel2_brand.classList.add('is-invalid');
+        document.getElementById("errorWheel2_brand").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    else {
+        wheel2_data.push(wheel2_brand.value);
+    }
+    if (wheel2_diameter.value == "") {
+        wheel2_diameter.classList.add('is-invalid');
+        document.getElementById("errorWheel2_diameter").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    else {
+        wheel2_data.push(wheel2_diameter.value);
+        wheels_data.push(wheel2_data);
+    }
+    if (wheel3_brand.value == "") {
+        wheel3_brand.classList.add('is-invalid');
+        document.getElementById("errorWheel3_brand").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    else {
+        wheel3_data.push(wheel3_brand.value);
+    }
+    if (wheel3_diameter.value == "") {
+        wheel3_diameter.classList.add('is-invalid');
+        document.getElementById("errorWheel3_diameter").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    else {
+        wheel3_data.push(wheel3_diameter.value);
+        wheels_data.push(wheel3_data);
+    }
+    if (wheel4_brand.value == "") {
+        wheel4_brand.classList.add('is-invalid');
+        document.getElementById("errorWheel4_brand").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    else {
+        wheel4_data.push(wheel4_brand.value);
+    }
+    if (wheel4_diameter.value == "") {
+        wheel4_diameter.classList.add('is-invalid');
+        document.getElementById("errorWheel4_diameter").textContent = "Este campo es obligatorio";
+        acumErrores++;
+    }
+    else {
+        wheel4_data.push(wheel4_diameter.value);
+        wheels_data.push(wheel4_data);
+    }
+    function showWheel(wheel1) {
+        var wheelProperties = document.getElementById("col");
+        wheelProperties.innerHTML = "Brand: " + wheel1_brand.value + " // Diameter: " + wheel1_diameter.value + " ";
+    }
+    wheel1 = new Wheel(wheel1_brand.value, parseInt(wheel1_diameter.value));
+    wheel2 = new Wheel(wheel2_brand.value, parseInt(wheel2_diameter.value));
+    wheel3 = new Wheel(wheel3_brand.value, parseInt(wheel3_diameter.value));
+    wheel4 = new Wheel(wheel4_brand.value, parseInt(wheel4_diameter.value));
+    var show_wheel = document.getElementById("show_wheels");
+    show_wheel.classList.remove('invisible');
+    showWheel(wheel1);
+    showWheel(wheel2);
+    showWheel(wheel3);
+    showWheel(wheel4);
+    /*let show_car = (<HTMLElement>document.getElementById("show_car"));
+    show_car.classList.remove('invisible');
+    
+    showCar(car);
+    plate.value = "";
+    brand.value = "";
+    color.value = "";*/
+    event.preventDefault();
+};
