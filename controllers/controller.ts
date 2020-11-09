@@ -65,8 +65,6 @@ myForm.onsubmit = (event) => {
 
 //Todo lo relacionado con wheels.
 
-
-
 var myFormWheel = (<HTMLFormElement>document.getElementById('myFormIdWheel'));
 
 myFormWheel.onsubmit = (event) => {
@@ -80,83 +78,69 @@ myFormWheel.onsubmit = (event) => {
     let wheel4_diameter: HTMLInputElement = (document.getElementById('wheel4_diameter') as HTMLInputElement);
 
     let acumErrores = 0;
-    let wheels_data = [];
-    let wheel1_data= [];
-    let wheel2_data= [];
-    let wheel3_data= [];
-    let wheel4_data= [];
-
+    
     if(wheel1_brand.value == "") {
         wheel1_brand.classList.add('is-invalid');
 		(<HTMLElement>document.getElementById("errorWheel1_brand")).textContent = "Este campo es obligatorio";
         acumErrores ++;
-    }else{
-        wheel1_data.push(wheel1_brand.value);
     }
 
     if(wheel1_diameter.value == "") {
         wheel1_diameter.classList.add('is-invalid');
 		(<HTMLElement>document.getElementById("errorWheel1_diameter")).textContent = "Este campo es obligatorio";
         acumErrores ++;
-    }else{
-        wheel1_data.push(wheel1_diameter.value);
-        wheels_data.push(wheel1_data);
     }
 
     if(wheel2_brand.value == "") {
         wheel2_brand.classList.add('is-invalid');
 		(<HTMLElement>document.getElementById("errorWheel2_brand")).textContent = "Este campo es obligatorio";
         acumErrores ++;
-    }else{
-        wheel2_data.push(wheel2_brand.value);
     }
 
     if(wheel2_diameter.value == "") {
         wheel2_diameter.classList.add('is-invalid');
 		(<HTMLElement>document.getElementById("errorWheel2_diameter")).textContent = "Este campo es obligatorio";
         acumErrores ++;
-    }else{
-        wheel2_data.push(wheel2_diameter.value);
-        wheels_data.push(wheel2_data);
     }
 
     if(wheel3_brand.value == "") {
         wheel3_brand.classList.add('is-invalid');
 		(<HTMLElement>document.getElementById("errorWheel3_brand")).textContent = "Este campo es obligatorio";
         acumErrores ++;
-    }else{
-        wheel3_data.push(wheel3_brand.value);
     }
 
     if(wheel3_diameter.value == "") {
         wheel3_diameter.classList.add('is-invalid');
 		(<HTMLElement>document.getElementById("errorWheel3_diameter")).textContent = "Este campo es obligatorio";
         acumErrores ++;
-    }else{
-        wheel3_data.push(wheel3_diameter.value);
-        wheels_data.push(wheel3_data);
     }
 
     if(wheel4_brand.value == "") {
         wheel4_brand.classList.add('is-invalid');
 		(<HTMLElement>document.getElementById("errorWheel4_brand")).textContent = "Este campo es obligatorio";
         acumErrores ++;
-    }else{
-        wheel4_data.push(wheel4_brand.value);
     }
 
     if(wheel4_diameter.value == "") {
         wheel4_diameter.classList.add('is-invalid');
 		(<HTMLElement>document.getElementById("errorWheel4_diameter")).textContent = "Este campo es obligatorio";
         acumErrores ++;
-    }else{
-        wheel4_data.push(wheel4_diameter.value);
-        wheels_data.push(wheel4_data);
     }
 
-    function showWheel(wheel1: Wheel){
+    function showWheel(){
+        let wheelsArray =[];
+        wheelsArray.push(wheel1, wheel2, wheel3, wheel4);
         let wheelProperties: any = document.getElementById("col");
-        wheelProperties.innerHTML = `Brand: ${wheel1_brand.value} // Diameter: ${wheel1_diameter.value} `;
+        for(let i = 0; i < wheelsArray.length; i++){
+            let text = `Wheel ${i +1 } = Brand: ${wheelsArray[i].brand} & Diameter: ${wheelsArray[i].diameter} `;
+            wheelProperties.appendChild(createLi(text));
+        }
+    }
+
+    var createLi = (text:string)=> {
+        let li = document.createElement('li');
+        li.textContent = text;
+        return li;
     }
     
     wheel1 = new Wheel(wheel1_brand.value, parseInt(wheel1_diameter.value));
@@ -166,20 +150,17 @@ myFormWheel.onsubmit = (event) => {
 
     let show_wheel = (<HTMLElement>document.getElementById("show_wheels"));
     show_wheel.classList.remove('invisible');
-    showWheel(wheel1);
-    showWheel(wheel2);
-    showWheel(wheel3);
-    showWheel(wheel4);
+    showWheel();
     
-    
+    wheel1_brand.value = "";
+    wheel1_diameter.value = "";
+    wheel2_brand.value = "";
+    wheel2_diameter.value = "";
+    wheel3_brand.value = "";
+    wheel3_diameter.value = "";
+    wheel4_brand.value = "";
+    wheel4_diameter.value = "";
 
-    /*let show_car = (<HTMLElement>document.getElementById("show_car"));
-    show_car.classList.remove('invisible');
-    
-    showCar(car);
-    plate.value = "";
-    brand.value = "";
-    color.value = "";*/
     event.preventDefault()
 }
 
