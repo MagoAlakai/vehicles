@@ -10,7 +10,7 @@ class Car{
         this.color=color;
     }
     
-    addWheel(wheel:Wheel):void{
+    addWheel(wheel:Wheel):any{
         this.wheels.push(wheel);
     }
 }
