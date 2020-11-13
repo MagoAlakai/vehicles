@@ -2,7 +2,7 @@ class Car{
     plate:string;
     color:string;
     brand:string;
-    wheels:Wheel[]=new Array();
+    public wheels:Wheel[]=new Array();
     
     constructor(plate:string, brand:string,color:string){
         this.plate=plate;
@@ -10,7 +10,7 @@ class Car{
         this.color=color;
     }
     
-    addWheel(wheel:Wheel):any{
+    addWheel(wheel:Wheel):void{
         this.wheels.push(wheel);
     }
 }

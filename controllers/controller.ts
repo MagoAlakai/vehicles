@@ -31,18 +31,20 @@ function showCar(car: Car){
         }
     } 
 }
+//CREACION VARIABLES Y ASIGNACION
 
-//Recogida de datos del formulario
+//Recogida de datos del formulario Car
 
-var myForm = (<HTMLFormElement>document.getElementById('myFormId'));
+let myForm = (<HTMLFormElement>document.getElementById('myFormId'));
+let plate: HTMLInputElement = (document.getElementById('plate') as HTMLInputElement);
+let brand: HTMLInputElement = (document.getElementById('brand') as HTMLInputElement);
+let color: HTMLInputElement = (document.getElementById('color') as HTMLInputElement);
 
+//Creación variable formulario Wheel
+let myFormWheel = (<HTMLFormElement>document.getElementById('myFormIdWheel'));
+
+//ONSUBMIT DE FORM CAR Y CONTROL
 myForm.onsubmit = (event) => {
-    let plate: HTMLInputElement = (document.getElementById('plate') as HTMLInputElement);
-    let brand: HTMLInputElement = (document.getElementById('brand') as HTMLInputElement);
-    let color: HTMLInputElement = (document.getElementById('color') as HTMLInputElement);
-
-//Control de los datos introducidos
-
     let acumErrores = 0;
 
     if(plate.value == "") {
@@ -85,8 +87,33 @@ myForm.onsubmit = (event) => {
         color.value = "";
     }
     
+    myFormWheel.classList.remove('invisible');
+    
 event.preventDefault()
 }
+
+//EVENT LISTENER CAR
+
+let verifyCar = (event:any)=>{
+
+    if((<HTMLInputElement>event.target).value ==='') {
+        (<HTMLElement>event.target).classList.add('is-invalid');
+        if((<HTMLInputElement>event.target).value === plate.value){
+            (<HTMLElement>document.getElementById("errorPlate")).textContent = "Este campo es obligatorio";
+        }else if((<HTMLInputElement>event.target).value === brand.value){
+            (<HTMLElement>document.getElementById("errorBrand")).textContent = "Este campo es obligatorio";
+        }else if((<HTMLInputElement>event.target).value === color.value){
+            (<HTMLElement>document.getElementById("errorColor")).textContent = "Este campo es obligatorio";
+        }
+    }else if(!validar_matricula(plate.value)){
+        (<HTMLElement>event.target).classList.add('is-invalid');
+        (<HTMLElement>document.getElementById("errorPlate")).textContent = "Esta matrícula no cumple el formato";
+    }else{
+        (<HTMLElement>event.target).classList.remove('is-invalid');
+    }
+}
+
+myForm.addEventListener('change', verifyCar);
 
 //WHEELS
 
@@ -103,15 +130,14 @@ let createLi = (text:string)=> {
     return li;
 }
 
-//Recogida de datos del formulario
+//ONSUBMIT DE FORM WHEEL Y CONTROL
 
-var myFormWheel = (<HTMLFormElement>document.getElementById('myFormIdWheel'));
 let wheels: Array<any> = new Array();
 var acumErrores = 0;
 myFormWheel.onsubmit = (event) => {
 
     for(let i = 1; i <= 4; i++){
-        let wheel_brand: HTMLInputElement = (document.getElementById('wheel' + i +'_brand') as HTMLInputElement);
+        let wheel_brand: HTMLInputElement = (document.getElementById('wheel' + i +'_brand') as HTMLInputElement); 
         let wheel_diameter: HTMLInputElement = (document.getElementById('wheel' + i + '_diameter') as HTMLInputElement);
 
     //Control entrada datos ruedas
@@ -120,6 +146,8 @@ myFormWheel.onsubmit = (event) => {
             wheel_brand.classList.add('is-invalid');
             (<HTMLElement>document.getElementById("errorWheel" + i +"_brand")).textContent = "Este campo es obligatorio";
             acumErrores ++;
+        }else{
+            acumErrores === 0;
         }
     
         if(wheel_diameter.value == "") {
@@ -130,22 +158,22 @@ myFormWheel.onsubmit = (event) => {
             wheel_diameter.classList.add('is-invalid');
             (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = 'El diámetro de la rueda' + i +' no es correcto';
             acumErrores ++;
+        }else{
+            acumErrores === 0;
         }
 
         if(acumErrores === 0){
             let wheel = new Wheel(wheel_brand.value, parseFloat(wheel_diameter.value));
             //car.addWheel(wheel);
-            wheels.push(wheel),
-            wheel_brand.classList.remove('is-invalid');
-            wheel_diameter.classList.remove('is-invalid');
+            wheels.push(wheel);
         }
-        
 
     //Limpiar Inputs
-        /*wheel_brand.value = "";
-        wheel_diameter.value = "";*/
+        wheel_brand.value = "";
+        wheel_diameter.value = "";
     }
 
+    //Mostrar wheels por pantalla
     if(acumErrores === 0){
         let show_wheels = (<HTMLDivElement>document.getElementById("show_wheels"));
         show_wheels.classList.remove('invisible');
@@ -154,48 +182,42 @@ myFormWheel.onsubmit = (event) => {
             showWheel(text);
         }
     }
-    //Mostrar objetos ruedas en DOM
-    /*if(boleano === true){
+
+//VERSION DE SHOWWHEEL USANDO CAR.ADDWHEEL
+    /*if(acumErrores === 0){
         let show_wheels = (<HTMLDivElement>document.getElementById("show_wheels"));
         show_wheels.classList.remove('invisible');
-        for(let i = 0; i < wheels.length; i++){
-            let text = `Wheel ${i + 1} = Brand: ${wheels[i].brand} & Diameter: ${wheels[i].diameter} `;
+        for(let i = 0; i < car.wheels.length; i++){
+            let text = `Wheel ${i + 1} = Brand: ${car.wheels[i].brand} & Diameter: ${car.wheels[i].diameter} `;
             showWheel(text);
         }
-   }*/
-
-    /*for(let i = 0; i < wheels.length; i++){
-        let text = `Wheel ${i + 1} = Brand: ${car.wheels[i].brand} & Diameter: ${car.wheels[i].diameter} `;
-        showWheel(text);
     }*/
     
     event.preventDefault();
 }
 
-/*myFormWheel.addEventListener('blur', (event) => {
+//EVENT LISTENER WHEELS
+
+let verifyWheel = (event:any)=>{
     for(let i = 1; i <= 4; i++){
         let wheel_brand: HTMLInputElement = (document.getElementById('wheel' + i +'_brand') as HTMLInputElement);
         let wheel_diameter: HTMLInputElement = (document.getElementById('wheel' + i + '_diameter') as HTMLInputElement);
 
         if((<HTMLInputElement>event.target).value ==='') {
             (<HTMLElement>event.target).classList.add('is-invalid');
-            if(wheel_brand.value == (<HTMLInputElement>event.target).value) {
-                (<HTMLElement>event.target).classList.add('is-invalid');
+            if((<HTMLInputElement>event.target).value === wheel_brand.value){
                 (<HTMLElement>document.getElementById("errorWheel" + i +"_brand")).textContent = "Este campo es obligatorio";
-            }
-            if(wheel_diameter.value == (<HTMLInputElement>event.target).value) {
-                (<HTMLElement>event.target).classList.add('is-invalid');
+            }else if((<HTMLInputElement>event.target).value === wheel_diameter.value){
                 (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = "Este campo es obligatorio";
             }
-        }else if((wheel_diameter.value == (<HTMLInputElement>event.target).value && !(parseFloat((<HTMLInputElement>event.target).value) > 0.4 && parseFloat((<HTMLInputElement>event.target).value) < 2))){
+        }else if(parseFloat((<HTMLInputElement>event.target).value) < 0.4 || parseFloat((<HTMLInputElement>event.target).value) >= 2){
             (<HTMLElement>event.target).classList.add('is-invalid');
             (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = 'El diámetro de la rueda' + i +' no es correcto';
         }else{
             (<HTMLElement>event.target).classList.remove('is-invalid');
+            acumErrores = 0;
         }
     }
-}*/
+}
 
-
-
-
+myFormWheel.addEventListener('change', verifyWheel);
