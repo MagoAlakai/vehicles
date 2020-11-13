@@ -1,5 +1,4 @@
 var car;
-var wheel;
 //CAR
 //Creación de funciones necesarias para crear, controlar y mostra car
 function validar_matricula(plate) {
@@ -73,25 +72,34 @@ myForm.onsubmit = function (event) {
         plate.value = "";
         brand.value = "";
         color.value = "";
+        myFormWheel.classList.remove('invisible');
     }
-    myFormWheel.classList.remove('invisible');
     event.preventDefault();
 };
 //EVENT LISTENER CAR
 var verifyCar = function (event) {
-    if (event.target.value === '') {
+    if (event.target.value === '' && event.target.value === plate.value) {
         event.target.classList.add('is-invalid');
-        if (event.target.value === plate.value) {
-            document.getElementById("errorPlate").textContent = "Este campo es obligatorio";
-        }
-        else if (event.target.value === brand.value) {
-            document.getElementById("errorBrand").textContent = "Este campo es obligatorio";
-        }
-        else if (event.target.value === color.value) {
-            document.getElementById("errorColor").textContent = "Este campo es obligatorio";
-        }
+        document.getElementById("errorPlate").textContent = "Este campo es obligatorio";
     }
-    else if (!validar_matricula(plate.value)) {
+    else {
+        event.target.classList.remove('is-invalid');
+    }
+    if (event.target.value === '' && event.target.value === brand.value) {
+        event.target.classList.add('is-invalid');
+        document.getElementById("errorBrand").textContent = "Este campo es obligatorio";
+    }
+    else {
+        event.target.classList.remove('is-invalid');
+    }
+    if (event.target.value === '' && event.target.value === color.value) {
+        event.target.classList.add('is-invalid');
+        document.getElementById("errorColor").textContent = "Este campo es obligatorio";
+    }
+    else {
+        event.target.classList.remove('is-invalid');
+    }
+    if (!validar_matricula(plate.value)) {
         event.target.classList.add('is-invalid');
         document.getElementById("errorPlate").textContent = "Esta matrícula no cumple el formato";
     }
@@ -99,7 +107,7 @@ var verifyCar = function (event) {
         event.target.classList.remove('is-invalid');
     }
 };
-myForm.addEventListener('change', verifyCar);
+myForm.addEventListener('blur', verifyCar, true);
 //WHEELS
 //Declaración de funciones
 var showWheel = function (text) {
@@ -112,7 +120,6 @@ var createLi = function (text) {
     return li;
 };
 //ONSUBMIT DE FORM WHEEL Y CONTROL
-var wheels = new Array();
 var acumErrores = 0;
 myFormWheel.onsubmit = function (event) {
     for (var i = 1; i <= 4; i++) {
@@ -134,39 +141,32 @@ myFormWheel.onsubmit = function (event) {
         }
         else if (!(parseFloat(wheel_diameter.value) > 0.4 && parseFloat(wheel_diameter.value) < 2)) {
             wheel_diameter.classList.add('is-invalid');
-            document.getElementById("errorWheel" + i + "_diameter").textContent = 'El diámetro de la rueda' + i + ' no es correcto';
+            document.getElementById("errorWheel" + i + "_diameter").textContent = 'El diámetro de la rueda ' + i + ' no es correcto';
             acumErrores++;
         }
         else {
             acumErrores === 0;
         }
         if (acumErrores === 0) {
-            var wheel_1 = new Wheel(wheel_brand.value, parseFloat(wheel_diameter.value));
-            //car.addWheel(wheel);
-            wheels.push(wheel_1);
+            var wheel = new Wheel(wheel_brand.value, parseFloat(wheel_diameter.value));
+            car.addWheel(wheel);
         }
-        //Limpiar Inputs
-        wheel_brand.value = "";
-        wheel_diameter.value = "";
     }
     //Mostrar wheels por pantalla
     if (acumErrores === 0) {
         var show_wheels = document.getElementById("show_wheels");
         show_wheels.classList.remove('invisible');
-        for (var i = 0; i < wheels.length; i++) {
-            var text = "Wheel " + (i + 1) + " = Brand: " + wheels[i].brand + " & Diameter: " + wheels[i].diameter + " ";
+        for (var i = 0; i < car.wheels.length; i++) {
+            var wheel_brand = document.getElementById('wheel' + (i + 1) + '_brand');
+            var wheel_diameter = document.getElementById('wheel' + (i + 1) + '_diameter');
+            var text = "Wheel " + (i + 1) + " = Brand: " + car.wheels[i].brand + " & Diameter: " + car.wheels[i].diameter + " ";
             showWheel(text);
+            //Limpiar Inputs
+            wheel_brand.value = "";
+            wheel_diameter.value = "";
+            event.preventDefault();
         }
     }
-    //VERSION DE SHOWWHEEL USANDO CAR.ADDWHEEL
-    /*if(acumErrores === 0){
-        let show_wheels = (<HTMLDivElement>document.getElementById("show_wheels"));
-        show_wheels.classList.remove('invisible');
-        for(let i = 0; i < car.wheels.length; i++){
-            let text = `Wheel ${i + 1} = Brand: ${car.wheels[i].brand} & Diameter: ${car.wheels[i].diameter} `;
-            showWheel(text);
-        }
-    }*/
     event.preventDefault();
 };
 //EVENT LISTENER WHEELS
@@ -185,7 +185,7 @@ var verifyWheel = function (event) {
         }
         else if (parseFloat(event.target.value) < 0.4 || parseFloat(event.target.value) >= 2) {
             event.target.classList.add('is-invalid');
-            document.getElementById("errorWheel" + i + "_diameter").textContent = 'El diámetro de la rueda' + i + ' no es correcto';
+            document.getElementById("errorWheel" + i + "_diameter").textContent = 'El diámetro de la rueda ' + i + ' no es correcto';
         }
         else {
             event.target.classList.remove('is-invalid');
@@ -193,4 +193,4 @@ var verifyWheel = function (event) {
         }
     }
 };
-myFormWheel.addEventListener('change', verifyWheel);
+myFormWheel.addEventListener('blur', verifyWheel, true);
