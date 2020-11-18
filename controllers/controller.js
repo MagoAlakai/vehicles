@@ -73,34 +73,27 @@ myForm.onsubmit = function (event) {
         brand.value = "";
         color.value = "";
         myFormWheel.classList.remove('invisible');
+        myForm.classList.add('d-none');
     }
     event.preventDefault();
 };
-//EVENT LISTENER CAR
 var verifyCar = function (event) {
-    if (event.target.value === '' && event.target.value === plate.value) {
-        event.target.classList.add('is-invalid');
-        document.getElementById("errorPlate").textContent = "Este campo es obligatorio";
-    }
-    else {
-        event.target.classList.remove('is-invalid');
-    }
     if (event.target.value === '' && event.target.value === brand.value) {
-        event.target.classList.add('is-invalid');
+        brand.classList.add('is-invalid');
         document.getElementById("errorBrand").textContent = "Este campo es obligatorio";
     }
     else {
         event.target.classList.remove('is-invalid');
     }
     if (event.target.value === '' && event.target.value === color.value) {
-        event.target.classList.add('is-invalid');
+        color.classList.add('is-invalid');
         document.getElementById("errorColor").textContent = "Este campo es obligatorio";
     }
     else {
         event.target.classList.remove('is-invalid');
     }
     if (!validar_matricula(plate.value)) {
-        event.target.classList.add('is-invalid');
+        plate.classList.add('is-invalid');
         document.getElementById("errorPlate").textContent = "Esta matrícula no cumple el formato";
     }
     else {
@@ -166,6 +159,7 @@ myFormWheel.onsubmit = function (event) {
             wheel_diameter.value = "";
             event.preventDefault();
         }
+        myFormWheel.classList.add('d-none');
     }
     event.preventDefault();
 };

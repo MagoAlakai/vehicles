@@ -84,38 +84,30 @@ myForm.onsubmit = (event) => {
         brand.value = "";
         color.value = "";
         myFormWheel.classList.remove('invisible');
+        myForm.classList.add('d-none');
     }
 
-event.preventDefault()
+    event.preventDefault();
 }
-
-//EVENT LISTENER CAR
 
 let verifyCar = (event:any)=>{
 
-    if((<HTMLInputElement>event.target).value ==='' && (<HTMLInputElement>event.target).value === plate.value) {
-        (<HTMLElement>event.target).classList.add('is-invalid');
-        (<HTMLElement>document.getElementById("errorPlate")).textContent = "Este campo es obligatorio";
-    }else{
-        (<HTMLElement>event.target).classList.remove('is-invalid');
-    }
-
     if((<HTMLInputElement>event.target).value ==='' &&  (<HTMLInputElement>event.target).value === brand.value){
-        (<HTMLElement>event.target).classList.add('is-invalid');
+        brand.classList.add('is-invalid');
         (<HTMLElement>document.getElementById("errorBrand")).textContent = "Este campo es obligatorio";
     }else{
         (<HTMLElement>event.target).classList.remove('is-invalid');
     }
     
     if((<HTMLInputElement>event.target).value ==='' &&  (<HTMLInputElement>event.target).value === color.value){
-        (<HTMLElement>event.target).classList.add('is-invalid');
+        color.classList.add('is-invalid');
         (<HTMLElement>document.getElementById("errorColor")).textContent = "Este campo es obligatorio";
     }else{
         (<HTMLElement>event.target).classList.remove('is-invalid');
     }
-    
+
     if(!validar_matricula(plate.value)){
-        (<HTMLElement>event.target).classList.add('is-invalid');
+        plate.classList.add('is-invalid');
         (<HTMLElement>document.getElementById("errorPlate")).textContent = "Esta matrícula no cumple el formato";
     }else{
         (<HTMLElement>event.target).classList.remove('is-invalid');
@@ -191,6 +183,7 @@ myFormWheel.onsubmit = (event) => {
             wheel_diameter.value = "";
             event.preventDefault();
         }
+        myFormWheel.classList.add('d-none');
     }
     
     event.preventDefault();
