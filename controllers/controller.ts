@@ -196,19 +196,43 @@ let verifyWheel = (event:any)=>{
         let wheel_brand: HTMLInputElement = (document.getElementById('wheel' + i +'_brand') as HTMLInputElement);
         let wheel_diameter: HTMLInputElement = (document.getElementById('wheel' + i + '_diameter') as HTMLInputElement);
 
-        if((<HTMLInputElement>event.target).value ==='') {
+        /*if((<HTMLInputElement>event.target).value === '') {
             (<HTMLElement>event.target).classList.add('is-invalid');
-            if((<HTMLInputElement>event.target).value === wheel_brand.value){
+            if((<HTMLInputElement>event.target) === wheel_brand){
                 (<HTMLElement>document.getElementById("errorWheel" + i +"_brand")).textContent = "Este campo es obligatorio";
             }else if((<HTMLInputElement>event.target).value === wheel_diameter.value){
                 (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = "Este campo es obligatorio";
             }
-        }else if(parseFloat((<HTMLInputElement>event.target).value) < 0.4 || parseFloat((<HTMLInputElement>event.target).value) >= 2){
+        }else if(parseFloat((<HTMLInputElement>event.target).value) < 0.4 || parseFloat((<HTMLInputElement>event.target).value) >= 2 && (<HTMLInputElement>event.target) == wheel_diameter ){
             (<HTMLElement>event.target).classList.add('is-invalid');
             (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = 'El diámetro de la rueda ' + i +' no es correcto';
         }else{
             (<HTMLElement>event.target).classList.remove('is-invalid');
             acumErrores = 0;
+        }*/
+
+    
+        if((<HTMLInputElement>event.target) === wheel_brand){
+            if((<HTMLInputElement>event.target).value === '') {
+                (<HTMLElement>event.target).classList.add('is-invalid');
+                (<HTMLElement>document.getElementById("errorWheel" + i +"_brand")).textContent = "Este campo es obligatorio";
+            }else{
+                (<HTMLElement>event.target).classList.remove('is-invalid');
+                acumErrores = 0;
+            }
+        }
+    
+        if((<HTMLInputElement>event.target) == wheel_diameter){
+            if((<HTMLInputElement>event.target).value === ''){
+                (<HTMLElement>event.target).classList.add('is-invalid');
+                (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = "Este campo es obligatorio";
+            }else if(parseFloat((<HTMLInputElement>event.target).value) < 0.4 || parseFloat((<HTMLInputElement>event.target).value) >= 2){
+                (<HTMLElement>event.target).classList.add('is-invalid');
+                (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = 'El diámetro de la rueda ' + i +' no es correcto';
+            }else{
+                (<HTMLElement>event.target).classList.remove('is-invalid');
+                acumErrores = 0;
+            }
         }
     }
 }
