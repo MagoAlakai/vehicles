@@ -67,14 +67,13 @@ myForm.onsubmit = (event) => {
         acumErrores ++;
     }
 
+    //Crear car y mostrar en DOM
     if (acumErrores === 0){
         plate.classList.remove('is-invalid');
         brand.classList.remove('is-invalid');
         color.classList.remove('is-invalid');
+        createCar(plate, brand, color);
 	}
-
-//Crear car y mostrar en DOM
-    createCar(plate, brand, color);
 
     if(validar_matricula(plate.value) && brand.value !== '' && color.value !== ''){
         let show_car = (<HTMLElement>document.getElementById("show_car"));
@@ -196,22 +195,6 @@ let verifyWheel = (event:any)=>{
         let wheel_brand: HTMLInputElement = (document.getElementById('wheel' + i +'_brand') as HTMLInputElement);
         let wheel_diameter: HTMLInputElement = (document.getElementById('wheel' + i + '_diameter') as HTMLInputElement);
 
-        /*if((<HTMLInputElement>event.target).value === '') {
-            (<HTMLElement>event.target).classList.add('is-invalid');
-            if((<HTMLInputElement>event.target) === wheel_brand){
-                (<HTMLElement>document.getElementById("errorWheel" + i +"_brand")).textContent = "Este campo es obligatorio";
-            }else if((<HTMLInputElement>event.target).value === wheel_diameter.value){
-                (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = "Este campo es obligatorio";
-            }
-        }else if(parseFloat((<HTMLInputElement>event.target).value) < 0.4 || parseFloat((<HTMLInputElement>event.target).value) >= 2 && (<HTMLInputElement>event.target) == wheel_diameter ){
-            (<HTMLElement>event.target).classList.add('is-invalid');
-            (<HTMLElement>document.getElementById("errorWheel" + i +"_diameter")).textContent = 'El diámetro de la rueda ' + i +' no es correcto';
-        }else{
-            (<HTMLElement>event.target).classList.remove('is-invalid');
-            acumErrores = 0;
-        }*/
-
-    
         if((<HTMLInputElement>event.target) === wheel_brand){
             if((<HTMLInputElement>event.target).value === '') {
                 (<HTMLElement>event.target).classList.add('is-invalid');
